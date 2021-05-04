@@ -1,0 +1,87 @@
+.wp-block-pts-content-block-icon-text {
+    .icon {
+        position: relative;
+        max-height: 200px;
+        @media (min-width: 576px) {
+            max-height: 1000px;
+        }
+        &::before {
+            color: #fff;
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            display: block;
+            font-size: 150px;
+            width: 150px;
+            height: 150px;
+            line-height: 1;
+            margin: auto;
+            text-align: center;
+            @media (min-width: 576px) {
+                font-size: 110px;
+                width: 110px;
+                height: 110px;
+            }
+            @media (min-width: 992px) {
+                font-size: 110px;
+                width: 110px;
+                height: 110px;
+            }
+        }
+        img {
+            width: 100%;
+            height: auto;
+        }
+    }
+    .bg-pts-qr-code {
+        background: url(../src/img/qr-code.png);
+        background-size: cover;
+    }
+    .col-text {
+        .pts-description {
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+    }
+    
+    /* color combinations */
+    > .row {
+        &.bg-pts-violett,
+        &.bg-pts-dunkelblau,
+        &.bg-pts-gradient {
+            color: $color_white;
+        }
+    }
+}
+/* row */
+.wp-bootstrap-blocks-row > [class^="col-"],
+.wp-block-wp-bootstrap-blocks-column,
+.wp-block-column {
+    .wp-block-pts-content-block-icon-text {
+        .col-icon {
+            @media (min-width: 992px) {
+                min-width: 33%;
+            }
+        }
+        .icon {
+            &::before {
+                font-size: 150px;
+                width: 150px;
+                height: 150px;
+                @media (min-width: 576px) {
+                    font-size: 110px;
+                    width: 110px;
+                    height: 110px;
+                }
+                @media (min-width: 992px) {
+                    font-size: 110px;
+                    width: 110px;
+                    height: 110px;
+                }
+            }
+        }
+    }
+}

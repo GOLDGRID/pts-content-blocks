@@ -1,0 +1,37 @@
+.wp-block-pts-content-block-icon-image-text {
+    .icon {
+        position: relative;
+        &::before {
+            color: #fff;
+            font-size: 40px;
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            display: block;
+            width: 90%;
+            height: 90%;
+            line-height: 120%;
+            margin: auto;
+            text-align: center;
+            @media (min-width: 480px) {
+                font-size: 60px;
+            }
+            @media (min-width: 768px) {
+                font-size: 40px;
+            }
+            @media (min-width: 992px) {
+                font-size: 140px;
+            }
+        }
+        img {
+            width: 100%;
+            height: auto;
+        }
+    }
+    .bg-pts-qr-code {
+        background: url(../src/img/qr-code.png);
+        background-size: cover;
+    }
+}

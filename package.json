@@ -1,0 +1,27 @@
+{
+  "name": "pts-content-block-cgb-guten-block",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "cgb-scripts start",
+    "build": "cgb-scripts build",
+    "eject": "cgb-scripts eject"
+  },
+  "dependencies": {
+    "cgb-scripts": "1.23.1"
+  },
+  "devDependencies": {
+    "@wordpress/scripts": "^14.1.1",
+    "autoprefixer": "^10.2.5",
+    "css-loader": "^5.2.2",
+    "extract-loader": "^5.1.0",
+    "file-loader": "^6.2.0",
+    "node-sass": "^5.0.0",
+    "postcss-cli": "^8.3.1",
+    "postcss-loader": "^5.2.0",
+    "sass-loader": "^11.0.1"
+  },
+  "browserslist": [
+    "extends @wordpress/browserslist-config"
+  ]
+}

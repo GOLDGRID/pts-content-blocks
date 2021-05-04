@@ -1,0 +1,14 @@
+/**
+ * #.# Editor Styles
+ *
+ * CSS for just Backend enqueued after style.scss
+ * which makes it higher in priority.
+ */
+ .wp-block-pts-content-block-icon-text {
+    font-size: 90%;
+    .icon {
+        &::before {
+            line-height: 100%;
+        }
+    }
+}
