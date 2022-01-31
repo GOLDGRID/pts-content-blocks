@@ -26,10 +26,7 @@ $color__pts-dunkelblau: #003e50;
 	font-display: block;
   }
   
-.wp-block-pts-content-block-icon-image-text [class^="icon-"],
-.wp-block-pts-content-block-icon-image-text [class*=" icon-"],
-.wp-block-pts-content-block-icon-text [class^="icon-"],
-.wp-block-pts-content-block-icon-text [class*=" icon-"] {
+  [class^="icon-"], [class*=" icon-"] {
 	/* use !important to prevent issues with browser extensions that change fonts */
 	font-family: 'icomoon' !important;
 	speak: never;

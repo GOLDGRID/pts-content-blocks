@@ -16,16 +16,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+
 function pts_plugin_block_categories( $categories, $post ) {
     //if ( $post->post_type !== 'post' ) {
     //    return $categories;
     //}
+
     return array_merge(
         array(
             array(
                 'slug' => 'pts-category',
                 'title' => __( 'PTS Blocks', 'pts-content-blocks' ),
-                'icon'  => 'shield',
+                'icon'  => 'layout',
             ),
         ),
 		$categories

@@ -2,11 +2,6 @@
     .icon {
         position: relative;
         max-height: 200px;
-         /* Coblock Fixes - 20210131 */
-         -webkit-mask-image: none;
-         mask-image: none;
-         width: 100%;
-         height: auto;
         @media (min-width: 576px) {
             max-height: 1000px;
         }

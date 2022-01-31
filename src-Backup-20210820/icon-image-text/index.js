@@ -16,7 +16,6 @@ import './style.scss';
 /**
 * import Custom Components for InspectorControls
 */
-import PTSBGColorSelect from '../components/PTSBGColorSelect.jsx';
 import PTSIconBGColorSelect from '../components/PTSIconBGColorSelect.jsx';
 import PTSIconColorSelect from '../components/PTSIconColorSelect.jsx';
 import PTSIconSelect from '../components/PTSIconSelect.jsx';
@@ -24,9 +23,9 @@ import PTSIconSelect from '../components/PTSIconSelect.jsx';
  /**
   * Register block
   */
- registerBlockType( 'pts-content-block/icon-text',
+ registerBlockType( 'pts-content-block/icon-image-text',
      {
-         title: __( 'Icon-Text', 'pts-content-block' ),
+         title: __( 'Icon-Bild-Text', 'pts-content-block' ),
         
          icon: 'welcome-widgets-menus', // Block icon from Dashicons → https://developer.wordpress.org/resource/dashicons/.
          category: 'pts-category',
@@ -42,13 +41,9 @@ import PTSIconSelect from '../components/PTSIconSelect.jsx';
 				source: 'html',
 				selector: '.pts-description',
 			},
-            selectedBGColor: {
-                type: 'string',
-                default: 'pts-white',
-            },
             selectedIconBG: {
                 type: 'string',
-                default: 'pts-white',
+                default: 'bg-pts-violett',
             },
             selectedIcon: {
                 type: 'string',
@@ -61,6 +56,19 @@ import PTSIconSelect from '../components/PTSIconSelect.jsx';
             selectedView: {
                 type: 'string',
                 default: 'left',
+            },
+            imageAlt: {
+                attribute: 'alt',
+                selector: '.card__image'
+            },
+            imageUrl: {
+                attribute: 'src',
+                 selector: '.card__image'
+            },
+            imageCopyright: {
+                type: 'string',
+                source: 'html',
+				selector: '.image-copyright',
             }
 		},
         //supports: {
@@ -72,10 +80,10 @@ import PTSIconSelect from '../components/PTSIconSelect.jsx';
             const {
                 attributes,
                 className,
-                setAttributes,
+                setAttributes
             } = props;
 
-            const allowedBlocks = ['core/button'];
+            const allowedBlocks = ['core/button','core/list','core/spacer'];
         
             function changeTitle( newTitle ) {
                 setAttributes( { title: newTitle } );
@@ -85,14 +93,38 @@ import PTSIconSelect from '../components/PTSIconSelect.jsx';
                 setAttributes( { description: newDescription } );
             }
 
+            function changeCopyright( newCopyright ) {
+                setAttributes( { imageCopyright: newCopyright } );
+            }
+
+            const getImageButton = (openEvent) => {
+                if(attributes.imageUrl) {
+                  return (
+                    <img 
+                      src={ attributes.imageUrl }
+                      onClick={ openEvent }
+                      className="image"
+                    />
+                  );
+                }
+                else {
+                  return (
+                    <div className="button-container">
+                      <Button 
+                        onClick={ openEvent }
+                        className="btn btn-lg"
+                      >
+                        Bitte Bild wählen
+                      </Button>
+                    </div>
+                  );
+                }
+            };
+
             return [
                 
                 <InspectorControls>
                     <PanelBody title={ __( 'Blockdarstellung anpassen', 'pts-block' ) }>
-                        <PTSBGColorSelect
-                            value={ props.attributes.selectedBGColor }
-                            onChangeBGColor={val => { setAttributes({ selectedBGColor: val }); }}
-                        />
                         <PTSIconSelect
                             value={ props.attributes.selectedIcon }
                             onChangeIcon={val => { setAttributes({ selectedIcon: val }); }}
@@ -120,15 +152,31 @@ import PTSIconSelect from '../components/PTSIconSelect.jsx';
 
                 <div className={ className }>
                 
-                    <div className={attributes.selectedBGColor + " row no-gutters"}>
+                    <div className="row no-gutters">
                         
-                        <div class={attributes.selectedView == 'right' ?  "col-12 col-sm-3 col-lg-2 col-icon" : "col-12 col-sm-3 col-lg-2 col-icon"}>
+                        <div class={attributes.selectedView == 'right' ?  "col-3 col-md-1 col-lg-2 order-3" : "col-3 col-md-1 col-lg-2 "}>
                             <div class={attributes.selectedIcon !== '' ? "icon " + attributes.selectedIcon + " " + attributes.selectedIconColor + " " + attributes.selectedIconBG : "icon" + " " + attributes.selectedIconBG}>
                                 <img src={cgbGlobal.pluginDirUrl + "src/img/blank-square.png"} class="img-icon" alt="" />
                             </div>
                         </div>
+
+                        <div class={attributes.selectedView == 'right' ? "col-9 col-md-5 col-lg-4 order-2" : "col-9 col-md-5 col-lg-4"}>
+                            <MediaUpload
+                                onSelect={ media => { setAttributes({ imageAlt: media.alt, imageUrl: media.url }); } }
+                                type="image"
+                                value={ attributes.imageID }
+                                render={ ({ open }) => getImageButton(open) }
+                            />
+                            <RichText
+                                tagName="p"
+                                value={ attributes.imageCopyright }
+                                className="image-copyright"
+                                onChange={ changeCopyright }
+                                placeholder={ __( 'Copyright Bild (optional)', 'gt-blocks' ) }
+                            />
+                        </div>
                         
-                        <div className={attributes.selectedView == 'right' ? "col-12 col-sm col-text mb-2 mb-md-0 py-2 px-4 order-lg-1" : "col-12 col-sm col-text mt-3 mt-md-0 py-2 px-4"}>
+                        <div className={attributes.selectedView == 'right' ? "col-12 col-md mb-2 mb-md-0 pb-2 pr-md-4 order-1" : "col-12 col-md mt-3 mt-md-0 pb-2 pl-md-4"}>
                             <RichText
                                 tagName="h2"
                                 value={ attributes.title }
@@ -161,24 +209,57 @@ import PTSIconSelect from '../components/PTSIconSelect.jsx';
                 description,
             } = attributes;
 
+            const cardImage = (src, alt) => {
+                if(!src) return null;
+            
+                if(alt) {
+                  return (
+                    <img 
+                      className="img-fluid" 
+                      src={ src }
+                      alt={ alt }
+                    /> 
+                  );
+                }
+                
+                // No alt set, so let's hide it from screen readers
+                return (
+                  <img 
+                    className="img-fluid" 
+                    src={ src }
+                    alt=""
+                    aria-hidden="true"
+                  /> 
+                );
+            };
         
             return (
                 <div>
-                    <div className={attributes.selectedBGColor + " row no-gutters"}>
+                    <div className="row no-gutters">
                          
-                        <div class={attributes.selectedView == 'right' ?  "col-12 col-sm-3 col-lg-2 col-icon order-lg-2" : "col-12 col-sm-3 col-lg-2 col-icon"}>
+                        <div class={attributes.selectedView == 'right' ?  "col-3 col-md-1 col-lg-2 order-3" : "col-3 col-md-1 col-lg-2 "}>
                             <div class={attributes.selectedIcon !== '' ? "icon " + attributes.selectedIcon + " " + attributes.selectedIconColor + " " + attributes.selectedIconBG : "icon" + " " + attributes.selectedIconBG}>
                                 <img src={cgbGlobal.pluginDirUrl + "src/img/blank-square.png"} class="img-icon" alt="" />
                             </div>
                         </div>
 
-                        <div className={attributes.selectedView == 'right' ? "col-12 col-sm col-text mb-2 mb-md-0 py-2 px-4 order-lg-1" : "col-12 col-sm col-text order-lg-1 mt-3 mt-md-0 py-2 px-4"}>
+                        <div class={attributes.selectedView == 'right' ? "col-9 col-md-5 col-lg-4 order-2" : "col-9 col-md-5 col-lg-4"}>
+                            { cardImage(attributes.imageUrl, attributes.imageAlt) }
+                            {attributes.imageCopyright.length > 0 && (
+                                <RichText.Content
+                                tagName="p"
+                                className="image-copyright"
+                                value={ attributes.imageCopyright }
+                            />
+                            )}
+                        </div>
+
+                        <div className={attributes.selectedView == 'right' ? "col-12 col-md mb-2 mb-md-0 pb-2 pr-md-4 order-1" : "col-12 col-md mt-3 mt-md-0 pb-2 pl-md-4"}>
                             <RichText.Content
                                 tagName="h2"
                                 className="pts-title"
                                 value={ title }
                             />
-        
                             <RichText.Content
                                 tagName="p"
                                 className="pts-description"
